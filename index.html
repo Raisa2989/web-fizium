@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ФизиУм — презентация приложения · учебник-тренажёр по физике 7–11</title>
+<meta name="description" content="ФизиУм — учебник-тренажёр всей школьной программы физики 7–11 классов: 82 темы, 872 вопроса с разбором, шпаргалка формул, справочник, офлайн, установка как приложение.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none'%3E%3Cg transform='translate(24 24)' stroke='%23A4243B' stroke-width='2.8'%3E%3Cellipse rx='19' ry='7.5'/%3E%3Cellipse rx='19' ry='7.5' transform='rotate(60)'/%3E%3Cellipse rx='19' ry='7.5' transform='rotate(120)'/%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='4.6' fill='%23A4243B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   ФизиУм · презентация-страница
+   Палитра «Вишня и шоколад»: кремовая бумага #F8EFE8 · вишня #A4243B ·
+   розово-вишнёвый #D06B8A · шоколадный (углубл.) #8F5222 · глубокий шоколад #38201A
+   ══════════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#F8EFE8; --card:#FFFFFF; --soft:#F2E6DD; --line:#E7D6CB;
+  --ink:#2A1712; --muted:#6E5344;
+  --violet:#A4243B; --violet2:#C13A58; --deep:#38201A; --deep2:#5C3A28;
+  --on-deep:#F8EFE8; --on-deep-muted:#D8BCA8;
+  --pink:#D06B8A; --pink2:#E08FA5;
+  --orange:#8F5222; --orange2:#B5712F;
+  --g7:#D97A93; --g8:#C13A58; --g9:#A4243B; --g10:#A5622A; --g11:#7A4415;
+  --red:#C0343C;
+  --sans:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  --r:18px; --shadow:0 14px 34px rgba(42,23,18,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+     line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:rgba(164,36,59,.25)}
+
+/* ── секции ── */
+section{min-height:100vh;min-height:100svh;scroll-snap-align:start;
+        display:flex;flex-direction:column;justify-content:center;
+        padding:76px 6vw 64px;position:relative;overflow:hidden}
+.wrap{width:100%;max-width:1180px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;
+         letter-spacing:.14em;text-transform:uppercase;color:var(--violet);
+         padding:6px 14px;border:1.5px solid rgba(164,36,59,.35);border-radius:999px;
+         background:rgba(193,58,88,.08)}
+.eyebrow.or{color:var(--orange);border-color:rgba(143,82,34,.35);background:rgba(181,113,47,.12)}
+h2.title{font-size:clamp(28px,3.6vw,44px);font-weight:800;letter-spacing:-.02em;margin:14px 0 10px}
+.title .u{box-shadow:inset 0 -.14em 0 rgba(224,143,165,.45)}
+.lead{color:var(--muted);font-size:clamp(15px,1.35vw,18px);max-width:640px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.soft{background:var(--soft);border:1px solid var(--line);border-radius:var(--r)}
+.icon{font-family:'Material Icons';font-weight:normal;font-style:normal;display:inline-flex;
+      align-items:center;justify-content:center;line-height:1;letter-spacing:normal;text-transform:none;
+      white-space:nowrap;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga'}
+
+/* ── анимации появления ── */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}}
+
+/* ── фиксированный интерфейс ── */
+#progress{position:fixed;top:0;left:0;height:4px;width:0;z-index:90;
+          background:linear-gradient(90deg,var(--violet),var(--pink2));border-radius:0 999px 999px 0}
+#topbar{position:fixed;top:14px;left:50%;transform:translate(-50%,-70px);z-index:80;
+        display:flex;align-items:center;gap:10px;padding:8px 16px 8px 10px;border-radius:999px;
+        background:rgba(255,255,255,.9);border:1px solid var(--line);box-shadow:var(--shadow);
+        backdrop-filter:blur(10px);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+#topbar.show{transform:translate(-50%,0)}
+#topbar img{width:26px;height:26px}
+#topbar b{font-size:14px;font-weight:800}
+#topbar .cnt{font-family:var(--mono);font-size:12px;color:var(--muted);padding-left:10px;border-left:1px solid var(--line)}
+#dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:80;
+      display:flex;flex-direction:column;gap:12px}
+#dots button{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;
+             background:rgba(42,23,18,.18);transition:all .3s;padding:0}
+#dots button:hover{background:rgba(42,23,18,.4)}
+#dots button.on{height:26px;background:var(--violet)}
+#dots.dark button{background:rgba(248,239,232,.28)}
+#dots.dark button.on{background:var(--pink2)}
+#hint{position:fixed;bottom:18px;right:22px;z-index:80;font-family:var(--mono);font-size:11.5px;
+      color:var(--muted);background:rgba(255,255,255,.85);border:1px solid var(--line);
+      border-radius:999px;padding:6px 12px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+
+/* ══ 1 · ГЕРОЙ ═════════════════════════════════════════════════════ */
+#hero{background:
+  radial-gradient(720px 420px at 85% 12%,rgba(224,143,165,.14),transparent 60%),
+  radial-gradient(820px 520px at 8% 90%,rgba(193,58,88,.16),transparent 60%),
+  var(--bg)}
+#hero .dotbg{position:absolute;inset:0;opacity:.5;pointer-events:none;background-image:
+  radial-gradient(rgba(164,36,59,.12) 1.6px,transparent 1.6px),
+  radial-gradient(rgba(208,107,138,.10) 1.6px,transparent 1.6px);
+  background-size:46px 46px,46px 46px;background-position:0 0,23px 23px}
+#hero .atom{position:absolute;right:-90px;top:-90px;width:380px;height:380px;opacity:.10;
+            animation:float 9s ease-in-out infinite}
+#hero .atom.a2{right:auto;left:-110px;top:auto;bottom:-120px;width:300px;height:300px;
+               opacity:.08;animation-delay:-4s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(6deg)}}
+.hero-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:56px;align-items:center;position:relative}
+#hero h1{font-size:clamp(34px,4.6vw,58px);font-weight:800;letter-spacing:-.028em;line-height:1.08;margin:20px 0 16px}
+#hero h1 .grad{background:linear-gradient(100deg,var(--violet) 15%,var(--pink) 90%);
+               -webkit-background-clip:text;background-clip:text;color:transparent}
+#hero .lead{font-size:clamp(15px,1.5vw,18.5px)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+      padding:8px 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--card)}
+.chip .icon{font-size:17px;color:var(--violet)}
+.chip.or .icon{color:var(--orange)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:800;
+     padding:13px 26px;border-radius:14px;border:none;cursor:pointer;text-decoration:none;
+     transition:transform .25s,box-shadow .25s}
+.btn:active{transform:scale(.97)}
+.btn-em{background:var(--violet);color:#fff;box-shadow:0 12px 26px rgba(164,36,59,.35)}
+.btn-em:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(164,36,59,.42)}
+.btn-ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:rgba(164,36,59,.5);color:var(--violet)}
+.hero-card{position:relative;padding:34px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.hero-card .appicon{width:150px;height:150px;filter:drop-shadow(0 18px 30px rgba(143,32,54,.35));
+                    animation:pulse-icon 5s ease-in-out infinite}
+@keyframes pulse-icon{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-card .appicon .orbits{transform-origin:256px 256px;animation:spin 26s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center}
+.stat b{display:block;font-family:var(--mono);font-size:clamp(20px,2vw,26px);font-weight:700;color:var(--violet)}
+.stat span{font-size:11.5px;color:var(--muted);font-weight:600}
+.scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;
+            align-items:center;gap:4px;color:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.12em;
+            text-transform:uppercase;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+/* ══ 2 · ПРОБЛЕМА ══════════════════════════════════════════════════ */
+.two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:stretch}
+.pain{display:flex;gap:16px;padding:20px 22px;align-items:flex-start;transition:transform .3s,box-shadow .3s}
+.pain:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(42,23,18,.12)}
+.pain .icon{width:46px;height:46px;border-radius:13px;flex:none;display:flex;align-items:center;justify-content:center;
+            font-size:24px;color:var(--orange);background:rgba(181,113,47,.14);border:1px solid rgba(143,82,34,.25)}
+.pain h3{font-size:17px;font-weight:800;margin-bottom:4px}
+.pain p{font-size:14px;color:var(--muted)}
+.pain-stack{display:flex;flex-direction:column;gap:14px}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:18px 22px;margin-top:14px;
+       border-left:5px solid var(--violet);border-radius:var(--r)}
+.chain b{font-size:14.5px}
+.chain .arrow{color:var(--orange2);font-weight:800}
+.photo-card{position:relative;border-radius:var(--r);overflow:hidden;min-height:380px;
+            box-shadow:var(--shadow);border:1px solid var(--line)}
+.photo-card img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform 6s ease}
+.photo-card:hover img{transform:scale(1.05)}
+.photo-card .cap{position:absolute;left:14px;bottom:14px;background:rgba(42,23,18,.72);color:#fff;
+                font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px)}
+.photo-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+                background:linear-gradient(135deg,rgba(193,58,88,.25),rgba(224,143,165,.25));color:var(--muted);
+                font-size:13px;font-weight:700}
+
+/* ══ 3 · ЧТО ВНУТРИ ════════════════════════════════════════════════ */
+.bento{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:8px}
+.b-card{padding:24px;display:flex;gap:18px;align-items:flex-start;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.b-card:hover{transform:translateY(-5px);box-shadow:0 20px 44px rgba(42,23,18,.13)}
+.b-card .icon{width:52px;height:52px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;font-size:26px}
+.b-card.vi .icon{color:var(--violet);background:rgba(193,58,88,.1);border:1px solid rgba(164,36,59,.3)}
+.b-card.pk .icon{color:var(--pink);background:rgba(224,143,165,.1);border:1px solid rgba(208,107,138,.3)}
+.b-card.or .icon{color:var(--orange);background:rgba(181,113,47,.14);border:1px solid rgba(143,82,34,.3)}
+.b-card.fu .icon{color:var(--g9);background:rgba(164,36,59,.1);border:1px solid rgba(164,36,59,.3)}
+.b-card h3{font-size:19px;font-weight:800;margin-bottom:6px}
+.b-card p{font-size:14px;color:var(--muted)}
+.b-card .tag{position:absolute;top:16px;right:18px;font-family:var(--mono);font-size:11.5px;font-weight:700;
+             color:var(--violet);background:rgba(193,58,88,.09);border:1px solid rgba(164,36,59,.25);
+             border-radius:999px;padding:3px 10px}
+.b-card .tag.p{color:var(--pink);background:rgba(224,143,165,.1);border-color:rgba(208,107,138,.25)}
+.b-card .tag.o{color:var(--orange);background:rgba(181,113,47,.12);border-color:rgba(143,82,34,.25)}
+.b-card .tag.f{color:var(--g9);background:rgba(164,36,59,.09);border-color:rgba(164,36,59,.25)}
+.mini-greek{position:absolute;right:18px;bottom:16px;font-family:var(--mono);font-size:15px;font-weight:600;
+            color:var(--violet);opacity:.55;letter-spacing:.14em}
+.ribbon{margin-top:20px;text-align:center;font-family:var(--mono);font-size:14px;font-weight:700;
+        color:var(--violet);padding:14px;border-radius:999px;background:var(--soft);border:1px dashed rgba(164,36,59,.4)}
+
+/* ══ 4 · ПРОГРАММА ═════════════════════════════════════════════════ */
+#program{padding-top:54px;padding-bottom:44px}
+.stages{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stage{padding:22px;position:relative;overflow:hidden}
+.stage::before{content:'';position:absolute;top:0;left:0;right:0;height:6px}
+.stage.vi::before{background:linear-gradient(90deg,var(--g7),var(--g9))}
+.stage.pk::before{background:linear-gradient(90deg,var(--g10),var(--g11))}
+.stage .stg-head{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.stage .stg-head .icon{font-size:26px}
+.stage.vi .stg-head .icon{color:var(--violet)}
+.stage.pk .stg-head .icon{color:var(--pink)}
+.stage h3{font-size:21px;font-weight:800}
+.stage .exam{font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.stage.vi .exam{color:var(--violet)}
+.stage.pk .exam{color:var(--pink)}
+.stage p{font-size:13.5px;color:var(--muted);margin:8px 0 10px}
+.stage .nums{display:flex;gap:18px;font-family:var(--mono);font-size:14px;font-weight:700;flex-wrap:wrap}
+.stage.vi .nums{color:var(--violet)}
+.stage.pk .nums{color:var(--pink)}
+.levels{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;margin-top:14px}
+.level{padding:14px 18px;display:flex;flex-direction:column;gap:5px}
+.level b{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
+.level p{font-size:13.5px;color:var(--muted)}
+.level .lv-vi b{color:var(--violet)} .level .lv-or b{color:var(--orange)}
+.plus{align-self:center;font-family:var(--mono);font-size:26px;font-weight:700;color:var(--muted)}
+.eq{margin-top:12px;padding:11px 20px;text-align:center;font-family:var(--mono);font-size:15px;font-weight:700;
+    border-radius:var(--r);background:linear-gradient(90deg,rgba(193,58,88,.09),rgba(181,113,47,.09));
+    border:1px solid var(--line)}
+.eq b.v{color:var(--violet)} .eq b.o{color:var(--orange)}
+.spectrum{margin-top:12px;padding:13px 18px 14px}
+.spec-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;position:relative;padding-bottom:11px}
+.spec-row::after{content:'';position:absolute;left:10px;right:10px;bottom:2px;height:4px;border-radius:99px;
+  background:linear-gradient(90deg,var(--g7),var(--g8),var(--g9),var(--g10),var(--g11))}
+.spec-g{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:800;
+        padding:7px 13px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.spec-g i{width:12px;height:12px;border-radius:999px;display:block;flex:none}
+.spec-sep{flex:1}
+.spec-g.adv{border-color:rgba(143,82,34,.4)}
+.spec-g.adv i{box-shadow:0 0 0 3px rgba(181,113,47,.2)}
+.spec-note{margin-top:3px;font-size:13px;color:var(--muted)}
+.spec-note b.v{color:var(--violet)} .spec-note b.o{color:var(--orange)}
+
+/* ══ 5 · ТРИ ШАГА ══════════════════════════════════════════════════ */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:10px;align-items:stretch}
+.step{padding:28px 26px;position:relative}
+.step .n{font-family:var(--mono);font-size:44px;font-weight:700;color:rgba(164,36,59,.25);line-height:1}
+.step .icon{width:50px;height:50px;border-radius:15px;margin:14px 0 12px;display:flex;align-items:center;
+            justify-content:center;font-size:25px;color:var(--violet);background:rgba(193,58,88,.1);
+            border:1px solid rgba(164,36,59,.28)}
+.step h3{font-size:19px;font-weight:800;margin-bottom:8px}
+.step p{font-size:14px;color:var(--muted)}
+.step .divider{position:absolute;top:34px;right:-4px;width:8px;height:8px;border-radius:999px;
+               background:var(--pink2);box-shadow:0 0 0 4px rgba(224,143,165,.25);z-index:2}
+.result-strip{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px;padding:18px 24px}
+.result-strip .icon{color:var(--orange);font-size:22px}
+.result-strip p{font-size:14.5px}
+.result-strip b.hl{color:var(--violet)}
+
+/* ══ 6 · ТРЕНАЖЁР (интерактив) ════════════════════════════════════ */
+#trainer{background:
+  radial-gradient(700px 460px at 92% 88%,rgba(224,143,165,.12),transparent 60%),
+  radial-gradient(600px 400px at 4% 8%,rgba(193,58,88,.1),transparent 60%),var(--bg)}
+.feat-list{display:flex;flex-direction:column;gap:13px;margin-top:6px}
+.feat{display:flex;gap:14px;align-items:flex-start;padding:17px 20px;transition:transform .3s}
+.feat:hover{transform:translateX(5px)}
+.feat .icon{color:var(--violet);font-size:22px;flex:none}
+.feat b{display:block;font-size:15.5px;font-weight:800;margin-bottom:3px}
+.feat p{font-size:13.5px;color:var(--muted)}
+.quiz{padding:26px;display:flex;flex-direction:column;gap:16px}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.quiz-top .qchip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--violet);background:rgba(193,58,88,.09);
+  border:1.5px solid rgba(164,36,59,.3);border-radius:999px;padding:5px 13px}
+.quiz-top .score{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--muted)}
+.qdots{display:flex;gap:6px}
+.qdots i{width:22px;height:5px;border-radius:999px;background:var(--line);transition:background .3s}
+.qdots i.done{background:var(--violet)} .qdots i.cur{background:var(--orange2)}
+.quiz h3{font-size:19px;font-weight:800;line-height:1.35}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{font-family:var(--sans);font-size:14.5px;font-weight:700;text-align:left;padding:13px 16px;border-radius:13px;
+     border:1.5px solid var(--line);background:var(--card);cursor:pointer;color:var(--ink);
+     display:flex;align-items:center;gap:10px;transition:all .22s}
+.opt .letter{font-family:var(--mono);font-size:11.5px;font-weight:700;flex:none;width:24px;height:24px;
+             border-radius:8px;display:flex;align-items:center;justify-content:center;
+             background:var(--soft);border:1px solid var(--line);color:var(--muted)}
+.opt:hover:not(:disabled){border-color:rgba(164,36,59,.55);transform:translateY(-2px);box-shadow:0 8px 18px rgba(42,23,18,.08)}
+.opt:disabled{cursor:default;opacity:.75}
+.opt.right{opacity:1;border-color:var(--violet);background:rgba(193,58,88,.12)}
+.opt.right .letter{background:var(--violet);color:#fff;border-color:var(--violet)}
+.opt.wrong{opacity:1;border-color:var(--red);background:rgba(192,52,60,.08)}
+.opt.wrong .letter{background:var(--red);color:#fff;border-color:var(--red)}
+.opt.dim{opacity:.4}
+.feedback{border-radius:14px;padding:15px 18px;font-size:14px;border:1.5px solid;animation:fbin .4s ease}
+@keyframes fbin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.feedback.ok{background:rgba(193,58,88,.1);border-color:rgba(164,36,59,.45)}
+.feedback.ok b{color:var(--violet);display:flex;align-items:center;gap:7px;font-size:15px;margin-bottom:4px}
+.feedback.no{background:rgba(192,52,60,.07);border-color:rgba(192,52,60,.4)}
+.feedback.no b{color:var(--red);display:flex;align-items:center;gap:7px;font-size:15px;margin-bottom:4px}
+.feedback p{color:var(--muted)}
+.quiz-actions{display:flex;justify-content:flex-end}
+.quiz .btn{padding:10px 22px;font-size:14px}
+.quiz-final{text-align:center;padding:10px 0 2px}
+.quiz-final .big{font-size:40px}
+.quiz-final h4{font-size:20px;font-weight:800;margin:6px 0 4px}
+.quiz-final p{font-size:14px;color:var(--muted)}
+
+/* ══ 7 · УСТРОЙСТВА ════════════════════════════════════════════════ */
+.devices{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+.device{padding:24px;text-align:center;transition:transform .3s,box-shadow .3s}
+.device:hover{transform:translateY(-5px);box-shadow:0 20px 44px rgba(42,23,18,.13)}
+.device h3{font-size:17px;font-weight:800;margin:14px 0 4px}
+.device p{font-size:13.5px;color:var(--muted)}
+.mock{height:170px;display:flex;align-items:center;justify-content:center}
+/* телефон */
+.phone{width:96px;height:158px;border-radius:22px;background:#2A1712;padding:7px;box-shadow:0 14px 28px rgba(42,23,18,.25);position:relative}
+.phone::before{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:34px;height:9px;
+               border-radius:999px;background:#4A322A}
+.phone .scr{background:var(--bg);border-radius:16px;height:100%;display:flex;flex-direction:column;overflow:hidden}
+.phone .scr .hd{padding:16px 8px 6px;display:flex;gap:4px}
+.phone .scr .hd i{height:4px;border-radius:99px;background:var(--line)}
+.phone .scr .rows{flex:1;padding:4px 8px;display:flex;flex-direction:column;gap:4px}
+.phone .scr .rows i{height:9px;border-radius:4px;background:var(--soft)}
+.phone .scr .rows i:nth-child(2){width:72%;background:rgba(193,58,88,.3)}
+.phone .scr .rows i:nth-child(3){width:88%}
+.phone .scr .rows i:nth-child(4){width:64%;background:rgba(224,143,165,.3)}
+.phone .scr .nav{height:26px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;padding:0 6px}
+.phone .scr .nav i{width:8px;height:8px;border-radius:3px;background:var(--line)}
+.phone .scr .nav i:first-child{background:var(--violet)}
+/* планшет — мини-шпаргалка формул */
+.tablet{width:150px;height:112px;border-radius:14px;background:#2A1712;padding:7px;box-shadow:0 14px 28px rgba(42,23,18,.25)}
+.tablet .scr{background:var(--card);border-radius:9px;height:100%;padding:8px 9px;display:flex;flex-direction:column;gap:6px}
+.tablet .srch{height:10px;border-radius:99px;background:var(--soft);position:relative;flex:none}
+.tablet .srch::after{content:'';position:absolute;right:5px;top:2px;width:6px;height:6px;border-radius:99px;
+                     border:1.5px solid var(--muted)}
+.tablet .fgrid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:3.5px}
+.tablet .fgrid i{height:9px;border-radius:3px;background:var(--soft)}
+.tablet .fgrid i:nth-child(2){background:rgba(193,58,88,.45)}
+.tablet .fgrid i:nth-child(4){background:rgba(224,143,165,.45)}
+.tablet .fgrid i:nth-child(6){background:rgba(181,113,47,.5)}
+.tablet .fgrid i:nth-child(7){background:rgba(164,36,59,.4)}
+.tablet .fgrid i:nth-child(8){background:rgba(193,58,88,.25)}
+/* ноутбук */
+.laptop{width:170px}
+.laptop .scr{height:104px;background:#2A1712;border-radius:12px 12px 4px 4px;padding:7px;box-shadow:0 14px 28px rgba(42,23,18,.25)}
+.laptop .scr .in{background:var(--card);border-radius:8px;height:100%;padding:9px 11px;display:flex;flex-direction:column;gap:6px}
+.laptop .scr .in .bar1{display:flex;gap:5px}.laptop .scr .in .bar1 i{width:5px;height:5px;border-radius:99px;background:var(--line)}
+.laptop .scr .in .pr{height:7px;border-radius:99px;background:var(--soft);position:relative;overflow:hidden}
+.laptop .scr .in .pr::after{content:'';position:absolute;left:0;top:0;bottom:0;width:62%;background:var(--violet);border-radius:99px}
+.laptop .scr .in .pr.p2::after{width:34%;background:var(--pink2)}
+.laptop .scr .in .pr.p3::after{width:81%;background:var(--orange2)}
+.laptop .base{height:9px;background:#4A322A;border-radius:0 0 12px 12px;margin:0 -14px}
+.plates{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.plate{display:flex;gap:14px;align-items:center;padding:16px 20px}
+.plate .icon{color:var(--orange);font-size:24px;flex:none}
+.plate p{font-size:14px}
+.plate b{color:var(--violet)}
+
+/* ══ 8 · УСТАНОВКА ═════════════════════════════════════════════════ */
+.install-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+.istep{padding:24px;position:relative}
+.istep .n{position:absolute;top:-14px;left:22px;width:34px;height:34px;border-radius:11px;background:var(--orange2);
+          color:#fff;font-family:var(--mono);font-weight:700;font-size:16px;display:flex;align-items:center;
+          justify-content:center;box-shadow:0 8px 18px rgba(181,113,47,.45)}
+.istep .icon{color:var(--violet);font-size:30px;margin:8px 0 10px}
+.istep h3{font-size:17.5px;font-weight:800;margin-bottom:6px}
+.istep p{font-size:14px;color:var(--muted)}
+.offline{display:flex;align-items:center;gap:18px;padding:22px 26px;margin-top:20px;
+         background:linear-gradient(100deg,var(--deep),var(--deep2));color:var(--on-deep);border-radius:var(--r);
+         box-shadow:0 18px 40px rgba(56,32,26,.4)}
+.offline .icon{font-size:32px;flex:none;color:#E89AAB}
+.offline p{font-size:15px}
+.offline b{color:#E89AAB}
+.platforms{margin-top:16px;text-align:center;font-size:13.5px;color:var(--muted)}
+.platforms b{color:var(--ink)}
+
+/* ── QR-код: быстрый вход ── */
+.qr-banner{display:flex;align-items:center;gap:28px;padding:22px 26px;margin-top:20px;flex-wrap:wrap}
+.qr-plate{flex:none;width:158px;height:158px;display:block;background:#fff;border:1px solid var(--line);
+          border-radius:16px;padding:11px;box-shadow:0 12px 28px rgba(42,23,18,.13);
+          transition:transform .3s,box-shadow .3s}
+.qr-plate:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 38px rgba(42,23,18,.18)}
+.qr-plate svg{width:100%;height:100%;display:block}
+.qr-info{flex:1;min-width:250px}
+.qr-chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.1em;
+         text-transform:uppercase;color:var(--violet);background:rgba(193,58,88,.08);
+         border:1px solid rgba(164,36,59,.3);border-radius:999px;padding:5px 12px;margin-bottom:10px}
+.qr-chip .icon{font-size:15px}
+.qr-info h3{font-size:17.5px;font-weight:800;margin-bottom:6px}
+.qr-info p{font-size:14px;color:var(--muted)}
+.qr-url{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;font-weight:600;
+        color:var(--violet);background:#fff;border:1px dashed rgba(164,36,59,.4);border-radius:999px;padding:7px 14px}
+
+/* ══ 9 · ПРИВАТНОСТЬ ═══════════════════════════════════════════════ */
+.priv{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
+.pv{display:flex;gap:15px;align-items:flex-start;padding:19px 22px}
+.pv .icon{width:44px;height:44px;border-radius:13px;flex:none;display:flex;align-items:center;justify-content:center;
+          font-size:22px;color:var(--violet);background:rgba(193,58,88,.1);border:1px solid rgba(164,36,59,.28)}
+.pv b{display:block;font-size:15.5px;font-weight:800;margin-bottom:3px}
+.pv p{font-size:13.5px;color:var(--muted)}
+.pub{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:18px;padding:20px 24px;
+     border-left:5px solid var(--violet)}
+.pub .icon{color:var(--violet);font-size:24px;flex:none}
+.pub p{font-size:14.5px}
+.pub b{color:var(--violet)}
+
+/* ══ 10 · ФИНАЛ ════════════════════════════════════════════════════ */
+#final{background:
+  radial-gradient(760px 480px at 50% 0%,rgba(208,107,138,.3),transparent 60%),var(--deep);
+  text-align:center;color:var(--on-deep)}
+#final .dotbg{position:absolute;inset:0;opacity:.18;pointer-events:none;background-image:
+  radial-gradient(rgba(248,239,232,.5) 1.6px,transparent 1.6px);background-size:46px 46px}
+#final .logo-plate{width:104px;height:104px;border-radius:30px;background:var(--on-deep);display:flex;
+   align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 22px 50px rgba(0,0,0,.35)}
+#final h2{font-size:clamp(40px,5vw,64px);font-weight:800;letter-spacing:-.03em}
+#final .slogan{margin-top:10px;font-size:clamp(17px,1.8vw,22px);color:var(--on-deep-muted)}
+#final .stats{margin:26px auto 0;display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  font-family:var(--mono);font-size:13px;font-weight:600;color:var(--on-deep)}
+#final .stats span{border:1px solid rgba(248,239,232,.28);border-radius:999px;padding:7px 16px;
+  background:rgba(248,239,232,.07)}
+#final .cta-line{margin-top:26px;font-size:16.5px}
+#final .cta-line b{color:#E89AAB}
+#final .footer{position:absolute;bottom:22px;left:0;right:0;font-size:12px;color:var(--on-deep-muted)}
+#final .footer a{color:#EFAEC0;text-decoration:none;font-weight:700}
+#final .footer a:hover{text-decoration:underline}
+
+/* ── адаптив ── */
+@media (max-width:1020px){
+  #dots{display:none}
+  .hero-grid,.two-col{grid-template-columns:1fr}
+  .hero-card{max-width:420px;margin:0 auto}
+  .bento{grid-template-columns:1fr}
+  .stages,.levels{grid-template-columns:1fr}
+  .plus{text-align:center}
+  .steps,.devices,.install-steps,.priv{grid-template-columns:1fr;gap:14px}
+  .step .divider{display:none}
+  .plates{grid-template-columns:1fr}
+  .qr-banner{flex-direction:column;text-align:center;gap:16px}
+  .qr-info{min-width:0}
+  .qr-url{justify-content:center}
+  section{padding:64px 5vw 56px}
+}
+@media (max-width:640px){
+  #hint{display:none}
+  #final .footer{font-size:11px;padding:0 14px}
+  .opts{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .photo-card{min-height:250px}
+  #topbar b{display:none}
+  .chain b{font-size:13px}
+  .spec-row{gap:6px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress" role="progressbar" aria-label="Прогресс презентации"></div>
+
+<div id="topbar" aria-hidden="true">
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none'%3E%3Cg transform='translate(24 24)' stroke='%23A4243B' stroke-width='3.2'%3E%3Cellipse rx='19' ry='7.5'/%3E%3Cellipse rx='19' ry='7.5' transform='rotate(60)'/%3E%3Cellipse rx='19' ry='7.5' transform='rotate(120)'/%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='4.6' fill='%23A4243B'/%3E%3Ccircle cx='24' cy='16.5' r='2.3' fill='%23A4243B' opacity='.6'/%3E%3Ccircle cx='34.6' cy='30.6' r='2' fill='%23A4243B' opacity='.5'/%3E%3C/svg%3E" alt="">
+  <b>ФизиУм</b><span class="cnt" id="counter">01 / 10</span>
+</div>
+
+<nav id="dots" aria-label="Навигация по слайдам"></nav>
+<div id="hint">стрелки ↑ ↓ · колесо</div>
+
+<!-- ═══ 1 · ГЕРОЙ ═════════════════════════════════════════════════ -->
+<section id="hero" aria-label="Титульный слайд">
+  <div class="dotbg"></div>
+  <svg class="atom" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g transform="translate(24 24)" stroke="#A4243B" stroke-width="1.6"><ellipse rx="19" ry="7.5"/><ellipse rx="19" ry="7.5" transform="rotate(60)"/><ellipse rx="19" ry="7.5" transform="rotate(120)"/></g><circle cx="24" cy="24" r="4.6" fill="#A4243B"/></svg>
+  <svg class="atom a2" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g transform="translate(24 24)" stroke="#D06B8A" stroke-width="1.6"><ellipse rx="19" ry="7.5"/><ellipse rx="19" ry="7.5" transform="rotate(60)"/><ellipse rx="19" ry="7.5" transform="rotate(120)"/></g><circle cx="24" cy="24" r="4.6" fill="#D06B8A"/></svg>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow reveal">Презентация приложения</span>
+      <h1 class="reveal" style="--d:80ms">Физика школьной программы — <span class="grad">понятно и&nbsp;с&nbsp;тренировкой</span></h1>
+      <p class="lead reveal" style="--d:160ms">ФизиУм — учебник-тренажёр всей школьной физики с 7 по 11 класс: структурированная теория, интерактивный тренажёр с разбором ошибок, шпаргалка формул и справочник. Устанавливается на телефон и компьютер, работает офлайн.</p>
+      <div class="chips reveal" style="--d:240ms">
+        <span class="chip"><i class="icon">apps</i>Устанавливается как приложение</span>
+        <span class="chip or"><i class="icon">wifi_off</i>Работает офлайн</span>
+        <span class="chip"><i class="icon">person_off</i>Без регистрации</span>
+      </div>
+      <div class="cta-row reveal" style="--d:320ms">
+        <button class="btn btn-em" data-goto="qr"><i class="icon">download</i>Скачать приложение</button>
+      </div>
+    </div>
+    <div class="card hero-card reveal" style="--d:200ms">
+      <svg class="appicon" viewBox="0 0 512 512" aria-label="Иконка приложения ФизиУм">
+        <defs><linearGradient id="bgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C13A58"/><stop offset="1" stop-color="#8F2036"/></linearGradient></defs>
+        <rect width="512" height="512" rx="112" fill="url(#bgg)"/>
+        <g class="orbits" stroke="#fff" stroke-width="22" fill="none" stroke-linecap="round">
+          <ellipse cx="256" cy="256" rx="150" ry="58"/>
+          <ellipse cx="256" cy="256" rx="150" ry="58" transform="rotate(60 256 256)"/>
+          <ellipse cx="256" cy="256" rx="150" ry="58" transform="rotate(120 256 256)"/>
+        </g>
+        <circle cx="256" cy="256" r="36" fill="#fff"/>
+        <circle cx="256" cy="198" r="17" fill="#fff" opacity=".65"/>
+        <circle cx="341" cy="306" r="14" fill="#fff" opacity=".5"/>
+      </svg>
+      <div class="stat-grid">
+        <div class="stat"><b data-count="82">0</b><span>тем теории</span></div>
+        <div class="stat"><b data-count="872">0</b><span>вопросов с разбором</span></div>
+        <div class="stat"><b data-count="5">0</b><span>классов: с 7 по 11</span></div>
+        <div class="stat"><b data-count="2">0</b><span>уровня программы</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true"><i class="icon" style="font-size:18px">keyboard_arrow_down</i>листайте</div>
+</section>
+
+<!-- ═══ 2 · ПРОБЛЕМА ══════════════════════════════════════════════ -->
+<section id="problem" aria-label="Знакомая ситуация">
+  <div class="wrap">
+    <span class="eyebrow or reveal">Знакомая ситуация?</span>
+    <h2 class="title reveal" style="--d:60ms">Учебник есть. <span class="u">Практики — нет.</span></h2>
+    <div class="two-col" style="margin-top:18px">
+      <div>
+        <div class="pain-stack">
+          <div class="card pain reveal" style="--d:100ms">
+            <i class="icon">menu_book</i>
+            <div><h3>Учебник</h3><p>Формулы выучены, а задача всё равно не решается: в параграфе нет практики.</p></div>
+          </div>
+          <div class="card pain reveal" style="--d:180ms">
+            <i class="icon">quiz</i>
+            <div><h3>Сборники задач</h3><p>Ответы — в конце книги, а объяснений ошибок — нет. Непонятно, почему именно так.</p></div>
+          </div>
+          <div class="card pain reveal" style="--d:260ms">
+            <i class="icon">payments</i>
+            <div><h3>Репетитор</h3><p>Дорого, по расписанию и не всегда под рукой. А экзамен — по расписанию школы.</p></div>
+          </div>
+        </div>
+        <div class="soft chain reveal" style="--d:340ms">
+          <b>ФизиУм закрывает всю цепочку:</b>
+          <span class="arrow">теория → тренировка → разбор ошибок → прогресс</span>
+        </div>
+      </div>
+      <div class="photo-card reveal" style="--d:200ms">
+        <img src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/3586b63a284c.webp" alt="Руки школьника собирают электрическую цепь из цветных проводов и модулей на деревянном столе" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-fallback" style="display:none"><span>Фото: практика по физике</span></div>
+        <span class="cap">Фото: практика — электрическая цепь</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3 · ЧТО ВНУТРИ ════════════════════════════════════════════ -->
+<section id="inside" aria-label="Что внутри">
+  <div class="wrap">
+    <span class="eyebrow reveal">Что внутри</span>
+    <h2 class="title reveal" style="--d:60ms">Весь курс — <span class="u">в одном приложении</span></h2>
+    <div class="bento">
+      <div class="card b-card vi reveal" style="--d:100ms">
+        <i class="icon">menu_book</i>
+        <div><h3>Учебник</h3><p>82 темы теории: определения, формулы, примеры и таблицы — короткими порциями, точно по рабочей программе.</p></div>
+        <span class="tag">82 темы</span>
+      </div>
+      <div class="card b-card pk reveal" style="--d:170ms">
+        <i class="icon">quiz</i>
+        <div><h3>Тренажёр</h3><p>872 вопроса четырёх типов: выбор ответа, множественный выбор, ввод ответа, соответствие. Каждый — с разбором.</p></div>
+        <span class="tag p">872 вопроса</span>
+      </div>
+      <div class="card b-card or reveal" style="--d:240ms">
+        <i class="icon">functions</i>
+        <div><h3>Шпаргалка формул</h3><p>112 формул по всем классам, сгруппированы по разделам, с расшифровкой величин и мгновенным поиском.</p></div>
+        <span class="tag o">112 формул</span>
+      </div>
+      <div class="card b-card fu reveal" style="--d:310ms">
+        <i class="icon">straighten</i>
+        <div><h3>Справочник</h3><p>Фундаментальные постоянные, единицы и приставки СИ, греческий алфавит, плотности веществ — всегда под рукой.</p></div>
+        <span class="tag f">5 разделов</span>
+        <span class="mini-greek" aria-hidden="true">α β γ λ μ π ρ σ</span>
+      </div>
+    </div>
+    <div class="ribbon reveal" style="--d:380ms">22 раздела · 82 темы · 872 вопроса · 4 типа заданий · 112 формул</div>
+  </div>
+</section>
+
+<!-- ═══ 4 · ПРОГРАММА ═════════════════════════════════════════════ -->
+<section id="program" aria-label="Структура программы">
+  <div class="wrap">
+    <span class="eyebrow reveal">Структура программы</span>
+    <h2 class="title reveal" style="--d:60ms">Два этапа — <span class="u">два уровня</span></h2>
+    <div class="stages">
+      <div class="card stage vi reveal" style="--d:100ms">
+        <div class="stg-head"><i class="icon">hub</i><h3>Этап 1 · 7–9 классы</h3></div>
+        <span class="exam">подготовка к ОГЭ</span>
+        <p>Первоначальные сведения, движение и силы, давление, работа и энергия, тепловые явления, электричество и магнетизм, колебания и волны, свет и первые квантовые представления.</p>
+        <div class="nums"><span>12 разделов</span><span>50 тем</span><span>532 вопроса</span></div>
+      </div>
+      <div class="card stage pk reveal" style="--d:170ms">
+        <div class="stg-head"><i class="icon">science</i><h3>Этап 2 · 10–11 классы</h3></div>
+        <span class="exam">подготовка к ЕГЭ</span>
+        <p>Механика и законы сохранения, молекулярная физика и термодинамика, электродинамика, колебания и волны, оптика, элементы теории относительности, квантовая физика и астрономия.</p>
+        <div class="nums"><span>10 разделов</span><span>32 темы</span><span>340 вопросов</span></div>
+      </div>
+    </div>
+    <div class="levels">
+      <div class="soft level reveal" style="--d:240ms">
+        <div class="lv-vi"><b><i class="icon" style="font-size:18px">check_circle</i>Базовый уровень</b></div>
+        <p>Вся программа целиком: 742 общих вопроса по всем темам обоих этапов.</p>
+      </div>
+      <div class="plus reveal" style="--d:300ms">+</div>
+      <div class="soft level reveal" style="--d:270ms">
+        <div class="lv-or"><b><i class="icon" style="font-size:18px">workspace_premium</i>Углублённый уровень</b></div>
+        <p>Надстройка над базой: 130 задач повышенной сложности и 2 темы только для профильных классов.</p>
+      </div>
+    </div>
+    <div class="eq reveal" style="--d:340ms"><b class="v">742 общих</b> + <b class="o">130 углублённых</b> = 872 вопроса в тренажёре</div>
+    <div class="soft spectrum reveal" style="--d:400ms">
+      <div class="spec-row">
+        <span class="spec-g"><i style="background:var(--g7)"></i>7 кл.</span>
+        <span class="spec-g"><i style="background:var(--g8)"></i>8 кл.</span>
+        <span class="spec-g"><i style="background:var(--g9)"></i>9 кл.</span>
+        <span class="spec-g"><i style="background:var(--g10)"></i>10 кл.</span>
+        <span class="spec-g"><i style="background:var(--g11)"></i>11 кл.</span>
+        <span class="spec-sep"></span>
+        <span class="spec-g adv"><i style="background:var(--orange2)"></i>углублённый</span>
+      </div>
+      <p class="spec-note">Палитра «Вишня и шоколад»: каждый класс подсвечен <b class="v">своим цветом — от вишнёвого к шоколадному</b>, а <b class="o">углублённый уровень — тёмным шоколадом</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5 · ТРИ ШАГА ═════════════════════════════════════════════ -->
+<section id="steps" aria-label="Занятие за три шага">
+  <div class="wrap">
+    <span class="eyebrow reveal">Методика</span>
+    <h2 class="title reveal" style="--d:60ms">Занятие — <span class="u">за три шага</span></h2>
+    <div class="steps">
+      <div class="card step reveal" style="--d:100ms">
+        <span class="divider"></span>
+        <div class="n">01</div>
+        <i class="icon">menu_book</i>
+        <h3>Читайте теорию</h3>
+        <p>Короткая тема с формулами, определениями и примерами — 5–7 минут чтения.</p>
+      </div>
+      <div class="card step reveal" style="--d:180ms">
+        <span class="divider"></span>
+        <div class="n">02</div>
+        <i class="icon">quiz</i>
+        <h3>Решайте тренажёр</h3>
+        <p>Вопросы всех четырёх типов по только что прочитанной теме — сразу на практике.</p>
+      </div>
+      <div class="card step reveal" style="--d:260ms">
+        <div class="n">03</div>
+        <i class="icon">fact_check</i>
+        <h3>Разбирайте ошибки</h3>
+        <p>После каждого вопроса — объяснение, почему ответ именно такой, а не другой.</p>
+      </div>
+    </div>
+    <div class="soft result-strip reveal" style="--d:330ms">
+      <i class="icon">trending_up</i>
+      <p>Тема за темой: процент проработки, достижения и режим <b class="hl">«работа над ошибками»</b> поддерживают темп до самого экзамена.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 6 · ТРЕНАЖЁР (интерактивное демо) ═════════════════════════ -->
+<section id="trainer" aria-label="Живое демо тренажёра">
+  <div class="wrap">
+    <span class="eyebrow reveal">Живое демо · попробуйте прямо здесь</span>
+    <h2 class="title reveal" style="--d:60ms">Тренажёр, который <span class="u">объясняет</span></h2>
+    <div class="two-col" style="margin-top:14px">
+      <div class="feat-list">
+        <div class="soft feat reveal" style="--d:100ms"><i class="icon">check_circle</i><div><b>Разбор сразу после ответа</b><p>Объяснение появляется под вопросом — не в конце теста, пока контекст свеж.</p></div></div>
+        <div class="soft feat reveal" style="--d:170ms"><i class="icon">fact_check</i><div><b>«Работа над ошибками»</b><p>Отдельный режим: приложение собирает ошибки и возвращает к ним до полного понимания.</p></div></div>
+        <div class="soft feat reveal" style="--d:240ms"><i class="icon">priority_high</i><div><b>Приоритет неотработанному</b><p>Вопросы, в которых были ошибки, встречаются чаще — до верного ответа.</p></div></div>
+        <div class="soft feat reveal" style="--d:310ms"><i class="icon">shuffle</i><div><b>Перемешивание вопросов</b><p>Случайный порядок — против зубрёжки номеров ответов.</p></div></div>
+      </div>
+      <div class="card quiz reveal" style="--d:180ms" id="quiz">
+        <div class="quiz-top">
+          <span class="qchip"><i class="icon" style="font-size:14px">science</i>Тренажёр · демо</span>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="qdots" id="qdots"><i></i><i></i><i></i></div>
+            <span class="score mono" id="qscore">0 / 0</span>
+          </div>
+        </div>
+        <h3 id="qtext">…</h3>
+        <div class="opts" id="qopts"></div>
+        <div id="qfeedback" aria-live="polite"></div>
+        <div class="quiz-actions"><button class="btn btn-em" id="qnext" style="display:none">Далее<i class="icon">arrow_forward</i></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 7 · УСТРОЙСТВА ════════════════════════════════════════════ -->
+<section id="devices" aria-label="Адаптивность">
+  <div class="wrap">
+    <span class="eyebrow reveal">Адаптивность</span>
+    <h2 class="title reveal" style="--d:60ms">Любой экран — <span class="u">свой интерфейс</span></h2>
+    <div class="devices">
+      <div class="card device reveal" style="--d:100ms">
+        <div class="mock"><div class="phone"><div class="scr"><div class="hd"><i style="flex:1"></i><i style="flex:.7"></i></div><div class="rows"><i></i><i></i><i></i><i></i></div><div class="nav"><i></i><i></i><i></i><i></i></div></div></div></div>
+        <h3>Телефон</h3>
+        <p>Нижнее меню навигации, крупные кнопки — всё достижимо большим пальцем.</p>
+      </div>
+      <div class="card device reveal" style="--d:170ms">
+        <div class="mock"><div class="tablet"><div class="scr"><div class="srch"></div><div class="fgrid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div></div>
+        <h3>Планшет</h3>
+        <p>Шпаргалка формул и справочник — в два касания, без прокрутки вбок.</p>
+      </div>
+      <div class="card device reveal" style="--d:240ms">
+        <div class="mock"><div class="laptop"><div class="scr"><div class="in"><div class="bar1"><i></i><i></i><i></i></div><div class="pr"></div><div class="pr p2"></div><div class="pr p3"></div></div></div><div class="base"></div></div></div>
+        <h3>Компьютер</h3>
+        <p>Вся программа в два клика: навигация в шапке, широкие таблицы и панели.</p>
+      </div>
+    </div>
+    <div class="plates">
+      <div class="soft plate reveal" style="--d:310ms"><i class="icon">contrast</i><p><b>Светлая и тёмная темы</b> — переключение в один клик, как привычнее глазу.</p></div>
+      <div class="soft plate reveal" style="--d:380ms"><i class="icon">straighten</i><p>От <b>360 пикселей</b> до широких мониторов — без горизонтальной прокрутки.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8 · УСТАНОВКА ═════════════════════════════════════════════ -->
+<section id="install" aria-label="Установка">
+  <div class="wrap">
+    <span class="eyebrow reveal">Установка</span>
+    <h2 class="title reveal" style="--d:60ms">Приложение — <span class="u">прямо из браузера</span></h2>
+    <p class="lead reveal" style="--d:90ms">Без App Store и Google Play: ФизиУм — полноценное PWA-приложение.</p>
+    <div class="install-steps">
+      <div class="card istep reveal" style="--d:120ms">
+        <span class="n">1</span><i class="icon">language</i>
+        <h3>Откройте сайт</h3><p>ФизиУм открывается по обычной ссылке в любом современном браузере.</p>
+      </div>
+      <div class="card istep reveal" style="--d:190ms">
+        <span class="n">2</span><i class="icon">download</i>
+        <h3>Нажмите «Установить»</h3><p>Меню браузера — «Установить приложение», или баннер прямо в ФизиУм.</p>
+      </div>
+      <div class="card istep reveal" style="--d:260ms">
+        <span class="n">3</span><i class="icon">apps</i>
+        <h3>Иконка на рабочем столе</h3><p>Запускается как обычная программа — отдельным окном, без адресной строки.</p>
+      </div>
+    </div>
+    <div id="qr" class="qr-banner card reveal" style="--d:300ms">
+      <a class="qr-plate" href="https://raisa2989.github.io/fizium/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" title="Открыть ФизиУм">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+viewBox="0 0 1155 1155" xml:space="preserve">
+<rect x="0" y="0" width="1155" height="1155" fill="rgb(255,255,255)" /><g transform="translate(70,70)"><g><defs>
+<linearGradient gradientTransform="rotate(90)" id="qr-grad">
+<stop offset="5%" stop-color="rgb(107,24,38)" />
+<stop offset="95%" stop-color="rgb(0,0,0)" />
+</linearGradient>
+<mask id="qr-gmask"><g>
+<g transform="translate(280,0) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,0) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,0) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,0) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,0) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,0) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,35) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,70) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,105) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,105) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,105) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,105) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,140) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,140) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,140) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,140) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,140) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,175) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,175) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,175) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,175) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,210) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,210) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,210) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,210) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,210) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,210) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,210) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,245) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,245) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,245) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,245) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,245) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,245) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,245) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(0,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(70,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(105,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(210,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(245,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,280) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(70,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(105,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,315) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(35,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(210,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,350) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(0,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,385) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(210,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(245,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,420) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(0,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(70,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(245,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,455) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(0,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(35,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(105,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(210,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,490) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(0,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(35,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(245,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,525) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(35,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(210,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(245,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,560) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(35,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(70,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(105,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(140,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(245,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,595) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(0,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(70,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(105,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(210,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,630) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(70,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,665) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(35,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(175,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(210,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,700) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,735) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,770) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,805) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,840) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(455,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(490,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(560,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(840,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,875) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(595,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(910,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(980,910) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(665,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(735,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(770,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,945) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(280,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(315,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(350,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(385,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(420,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(525,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(630,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(700,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(805,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(875,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(945,980) scale(0.35,0.35)"><g transform="" style="fill: rgb(255, 255, 255);">
+<rect width="100" height="100"/>
+</g></g><g transform="translate(0,0) scale(2.45, 2.45)"><g transform=" translate(100, 0) scale(-1,1) " style="fill: rgb(255, 255, 255);">
+<g>
+<path style="fill:none;" d="M85,66.221V33.75C85,23.411,76.414,15,65.859,15H34.14C23.586,15,15,23.411,15,33.75v51.246
+l50.855-0.016C76.414,84.98,85,76.564,85,66.221z"/>
+<path d="M100,66.221V33.75C100,15.141,84.68,0,65.859,0H34.14C15.32,0,0,15.141,0,33.75V100l65.859-0.02
+C84.68,99.98,100,84.84,100,66.221z M85,66.221c0,10.344-8.586,18.76-19.145,18.76L15,84.996V33.75C15,23.411,23.586,15,34.14,15
+h31.719C76.414,15,85,23.411,85,33.75V66.221z"/>
+</g>
+</g></g><g transform="translate(770,0) scale(2.45, 2.45)"><g transform="" style="fill: rgb(255, 255, 255);">
+<g>
+<path style="fill:none;" d="M85,66.221V33.75C85,23.411,76.414,15,65.859,15H34.14C23.586,15,15,23.411,15,33.75v51.246
+l50.855-0.016C76.414,84.98,85,76.564,85,66.221z"/>
+<path d="M100,66.221V33.75C100,15.141,84.68,0,65.859,0H34.14C15.32,0,0,15.141,0,33.75V100l65.859-0.02
+C84.68,99.98,100,84.84,100,66.221z M85,66.221c0,10.344-8.586,18.76-19.145,18.76L15,84.996V33.75C15,23.411,23.586,15,34.14,15
+h31.719C76.414,15,85,23.411,85,33.75V66.221z"/>
+</g>
+</g></g><g transform="translate(0,770) scale(2.45, 2.45)"><g transform=" translate(100, 0) scale(-1,1)  translate(0,100) scale(1,-1) " style="fill: rgb(255, 255, 255);">
+<g>
+<path style="fill:none;" d="M85,66.221V33.75C85,23.411,76.414,15,65.859,15H34.14C23.586,15,15,23.411,15,33.75v51.246
+l50.855-0.016C76.414,84.98,85,76.564,85,66.221z"/>
+<path d="M100,66.221V33.75C100,15.141,84.68,0,65.859,0H34.14C15.32,0,0,15.141,0,33.75V100l65.859-0.02
+C84.68,99.98,100,84.84,100,66.221z M85,66.221c0,10.344-8.586,18.76-19.145,18.76L15,84.996V33.75C15,23.411,23.586,15,34.14,15
+h31.719C76.414,15,85,23.411,85,33.75V66.221z"/>
+</g>
+</g></g><g transform="translate(70,70) scale(1.05, 1.05)"><g transform=" translate(100, 0) scale(-1,1) " style="fill: rgb(255, 255, 255);">
+<path d="M100,72.779V27.195C100,12.203,87.604,0,72.37,0H27.63C12.397,0,0,12.203,0,27.195V100l72.37-0.042
+C87.604,99.958,100,87.771,100,72.779z"/>
+</g></g><g transform="translate(840,70) scale(1.05, 1.05)"><g transform="" style="fill: rgb(255, 255, 255);">
+<path d="M100,72.779V27.195C100,12.203,87.604,0,72.37,0H27.63C12.397,0,0,12.203,0,27.195V100l72.37-0.042
+C87.604,99.958,100,87.771,100,72.779z"/>
+</g></g><g transform="translate(70,840) scale(1.05, 1.05)"><g transform=" translate(100, 0) scale(-1,1)  translate(0,100) scale(1,-1) " style="fill: rgb(255, 255, 255);">
+<path d="M100,72.779V27.195C100,12.203,87.604,0,72.37,0H27.63C12.397,0,0,12.203,0,27.195V100l72.37-0.042
+C87.604,99.958,100,87.771,100,72.779z"/>
+</g></g></g></mask></defs></g><rect x="0" y="0" width="1015" height="1015" fill="url(#qr-grad)" mask="url(#qr-gmask)" /></g></svg>
+      </a>
+      <div class="qr-info">
+        <span class="qr-chip"><i class="icon">qr_code_scanner</i>Быстрый вход</span>
+        <h3>Наведите камеру телефона</h3>
+        <p>Код открывает сайт ФизиУм за секунду — без ввода адреса. На компьютере можно просто нажать на код.</p>
+        <span class="qr-url mono">raisa2989.github.io/fizium</span>
+      </div>
+    </div>
+    <div class="offline reveal" style="--d:370ms">
+      <i class="icon">wifi_off</i>
+      <p>После установки <b>интернет не нужен</b>: теория, тренажёр, формулы и справочник работают полностью офлайн — дорога, дача, самолёт.</p>
+    </div>
+    <p class="platforms reveal" style="--d:440ms"><b>Android · Chrome · Edge</b> — кнопка установки · <b>iPhone и iPad</b> — Safari → «На экран “Домой”» · <b>Windows и macOS</b> — значок в адресной строке</p>
+  </div>
+</section>
+
+<!-- ═══ 9 · ПРИВАТНОСТЬ ═══════════════════════════════════════════ -->
+<section id="privacy" aria-label="Приватность">
+  <div class="wrap">
+    <span class="eyebrow reveal">Приватность</span>
+    <h2 class="title reveal" style="--d:60ms">Без аккаунтов, серверов <span class="u">и слежки</span></h2>
+    <div class="priv">
+      <div class="card pv reveal" style="--d:100ms"><i class="icon">person_off</i><div><b>Никакой регистрации</b><p>Нет логинов, паролей и писем с подтверждением — открыл и занимаешься.</p></div></div>
+      <div class="card pv reveal" style="--d:170ms"><i class="icon">storage</i><div><b>Нет API и базы данных</b><p>Приложение целиком живёт на устройстве: это один файл-сайт.</p></div></div>
+      <div class="card pv reveal" style="--d:240ms"><i class="icon">lock</i><div><b>Прогресс — локально</b><p>Достижения и статистика хранятся в браузере устройства и никуда не отправляются.</p></div></div>
+      <div class="card pv reveal" style="--d:310ms"><i class="icon">cloud_off</i><div><b>Ноль запросов наружу</b><p>Ни аналитики, ни трекеров, ни рекламы. Что происходит в приложении — остаётся на устройстве.</p></div></div>
+    </div>
+    <div class="card pub reveal" style="--d:380ms">
+      <i class="icon">rocket_launch</i>
+      <p>Публикация — как статический сайт: <b>GitHub Pages</b> бесплатно с автосборкой или хостинг <b>reg.ru</b> со своим доменом; HTTPS-сертификат — бесплатный Let's&nbsp;Encrypt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10 · ФИНАЛ ════════════════════════════════════════════════ -->
+<section id="final" aria-label="Финал">
+  <div class="dotbg"></div>
+  <div class="wrap">
+    <div class="logo-plate reveal">
+      <svg width="60" height="60" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g transform="translate(24 24)" stroke="#C13A58" stroke-width="3.2"><ellipse rx="19" ry="7.5"/><ellipse rx="19" ry="7.5" transform="rotate(60)"/><ellipse rx="19" ry="7.5" transform="rotate(120)"/></g><circle cx="24" cy="24" r="4.6" fill="#C13A58"/><circle cx="24" cy="16.5" r="2.3" fill="#C13A58" opacity=".6"/><circle cx="34.6" cy="30.6" r="2" fill="#C13A58" opacity=".5"/></svg>
+    </div>
+    <h2 class="reveal" style="--d:80ms">ФизиУм</h2>
+    <p class="slogan reveal" style="--d:160ms">Физика — понятно и с тренировкой</p>
+    <div class="stats reveal" style="--d:240ms">
+      <span>7–11 классы</span><span>базовый и углублённый</span><span>82 темы</span><span>872 вопроса с разбором</span><span>офлайн</span>
+    </div>
+    <p class="cta-line reveal" style="--d:320ms">Начните с первой темы — <b>ФизиУм сам поведёт по программе</b>.</p>
+    <div class="cta-row reveal" style="justify-content:center;--d:380ms">
+      <button class="btn btn-em" data-goto="hero"><i class="icon">arrow_upward</i>В начало презентации</button>
+    </div>
+  </div>
+  <div class="footer">Разработка — <a href="https://ds-analytics.ru/" target="_blank" rel="noopener noreferrer">DSA · Data Source Analytics</a> · содержание соответствует федеральным рабочим программам (ФГОС ООО/СОО)</div>
+</section>
+
+<script>
+/* ═══ данные демо-вопросов — настоящие вопросы ФизиУм ═══ */
+const QUIZ = [
+  { q: 'Качание маятника настенных часов — это явление:',
+    options: ['механическое', 'тепловое', 'световое', 'магнитное'],
+    correct: 0,
+    exp: 'Маятник — тело, которое движется (колеблется) в пространстве. Всё, что связано с движением и взаимодействием тел, относят к механическим явлениям.' },
+  { q: 'Стрелка компаса поворачивается и указывает на север. Это явление относят к:',
+    options: ['магнитным', 'электрическим', 'звуковым', 'тепловым'],
+    correct: 0,
+    exp: 'Стрелка компаса — маленький магнит, который взаимодействует с магнитным полем Земли. Взаимодействие магнитов и магнитных полей — предмет магнитных явлений.' },
+  { q: 'Средняя скорость молекул воздуха — сотни метров в секунду, но запах из открытого флакона доходит до другого конца комнаты за десятки секунд. Почему?',
+    options: ['молекулы постоянно сталкиваются с другими молекулами и меняют направление движения',
+              'молекулы аромата тяжелее и потому медленнее',
+              'в комнате есть невидимые преграды',
+              'запах распространяется только вверх'],
+    correct: 0,
+    exp: 'Между столкновениями молекула летит стремительно, но каждые доли миллиметра она «отскакивает» от соседей в случайную сторону. Реальное продвижение вперёд получается медленным.' },
+];
+const LET = ['А','Б','В','Г'];
+let qi = 0, score = 0;
+
+function renderQ() {
+  const q = QUIZ[qi];
+  document.getElementById('qtext').textContent = q.q;
+  const opts = document.getElementById('qopts');
+  opts.innerHTML = '';
+  q.options.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = '<span class="letter">' + LET[i] + '</span><span>' + o + '</span>';
+    b.addEventListener('click', () => answer(i));
+    opts.appendChild(b);
+  });
+  document.getElementById('qfeedback').innerHTML = '';
+  document.getElementById('qnext').style.display = 'none';
+  document.querySelectorAll('#qdots i').forEach((d, i) => {
+    d.className = i < qi ? 'done' : i === qi ? 'cur' : '';
+  });
+  document.getElementById('qscore').textContent = score + ' / ' + qi;
+}
+function answer(i) {
+  const q = QUIZ[qi];
+  const buttons = [...document.querySelectorAll('#qopts .opt')];
+  buttons.forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.correct) b.classList.add('right');
+    else if (idx === i) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+  const ok = i === q.correct;
+  if (ok) score++;
+  const fb = document.getElementById('qfeedback');
+  fb.innerHTML = '<div class="feedback ' + (ok ? 'ok' : 'no') + '">' +
+    '<b><i class="icon">' + (ok ? 'check_circle' : 'cancel') + '</i>' + (ok ? 'Верно!' : 'Неверно') + '</b>' +
+    '<p>' + q.exp + '</p></div>';
+  const nxt = document.getElementById('qnext');
+  nxt.style.display = 'inline-flex';
+  nxt.innerHTML = qi < QUIZ.length - 1
+    ? 'Следующий вопрос<i class="icon">arrow_forward</i>'
+    : '<i class="icon">refresh</i>Пройти ещё раз';
+  document.getElementById('qscore').textContent = score + ' / ' + (qi + 1);
+}
+document.getElementById('qnext').addEventListener('click', () => {
+  if (qi < QUIZ.length - 1) { qi++; renderQ(); }
+  else {
+    qi = 0;
+    const fin = document.getElementById('qfeedback');
+    fin.innerHTML = '<div class="quiz-final"><div class="big">' + (score === 3 ? '🏆' : '⚛️') + '</div>' +
+      '<h4>Демо пройдено: ' + score + ' из ' + QUIZ.length + '</h4>' +
+      '<p>В приложении — 872 таких вопроса с полными разборами.</p></div>';
+    document.getElementById('qnext').style.display = 'none';
+    document.querySelectorAll('#qdots i').forEach(d => d.className = 'done');
+    score = 0; qi = -1;
+    setTimeout(renderQ, 3500);
+  }
+});
+renderQ();
+
+/* ═══ прогресс-бар и счётчик слайдов ═══ */
+const SECTIONS = [...document.querySelectorAll('section')];
+const IDS = { hero:'Титул', problem:'Ситуация', inside:'Что внутри', program:'Программа', steps:'Методика', trainer:'Демо', devices:'Устройства', install:'Установка', privacy:'Приватность', final:'Финал' };
+const dotsNav = document.getElementById('dots');
+SECTIONS.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.setAttribute('aria-label', IDS[s.id] || s.id);
+  b.title = IDS[s.id] || s.id;
+  b.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth' }));
+  dotsNav.appendChild(b);
+});
+function setActive(i) {
+  document.querySelectorAll('#dots button').forEach((d, idx) => d.classList.toggle('on', idx === i));
+  document.getElementById('counter').textContent = String(i + 1).padStart(2, '0') + ' / ' + SECTIONS.length;
+  const dark = SECTIONS[i].id === 'final';
+  dotsNav.classList.toggle('dark', dark);
+}
+const secObserver = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) setActive(SECTIONS.indexOf(e.target)); });
+}, { rootMargin: '-45% 0px -45% 0px' });
+SECTIONS.forEach(s => secObserver.observe(s));
+
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+  document.getElementById('progress').style.width = (p * 100) + '%';
+  document.getElementById('topbar').classList.toggle('show', h.scrollTop > h.clientHeight * .55);
+}, { passive: true });
+
+/* ═══ появление элементов и счётчики ═══ */
+const revealObs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+}, { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+const cntObs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = +el.dataset.count, t0 = performance.now();
+    const tick = t => {
+      const k = Math.min((t - t0) / 1300, 1), ease = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(target * ease);
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    cntObs.unobserve(el);
+  });
+}, { threshold: .4 });
+document.querySelectorAll('[data-count]').forEach(el => cntObs.observe(el));
+
+/* ═══ клавиатура ═══ */
+let cur = 0;
+const secObs2 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) cur = SECTIONS.indexOf(e.target); }), { rootMargin: '-45% 0px -45% 0px' });
+SECTIONS.forEach(s => secObs2.observe(s));
+addEventListener('keydown', e => {
+  if (['ArrowDown','PageDown','ArrowRight'].includes(e.key)) { e.preventDefault(); SECTIONS[Math.min(cur + 1, SECTIONS.length - 1)].scrollIntoView({ behavior: 'smooth' }); }
+  if (['ArrowUp','PageUp','ArrowLeft'].includes(e.key)) { e.preventDefault(); SECTIONS[Math.max(cur - 1, 0)].scrollIntoView({ behavior: 'smooth' }); }
+  if (e.key === 'Home') { e.preventDefault(); SECTIONS[0].scrollIntoView({ behavior: 'smooth' }); }
+  if (e.key === 'End') { e.preventDefault(); SECTIONS[SECTIONS.length - 1].scrollIntoView({ behavior: 'smooth' }); }
+});
+
+/* ═══ кнопки-переходы ═══ */
+document.querySelectorAll('[data-goto]').forEach(b =>
+  b.addEventListener('click', () => {
+    const t = document.getElementById(b.dataset.goto);
+    /* секции — на весь экран, внутренние якоря (QR) — по центру */
+    t.scrollIntoView({ behavior: 'smooth', block: t.tagName === 'SECTION' ? 'start' : 'center' });
+  }));
+</script>
+</body>
+</html>
